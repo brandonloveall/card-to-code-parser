@@ -9,30 +9,30 @@ use std::io::Write;
 
 fn main() -> Result<(), Box<dyn std::error::Error>> {
     let args: Vec<String> = env::args().collect();
-    let cardNum = &args[1];
+    let card_num = &args[1];
 
-    let mut res = reqwest::blocking::get(format!("https://arkhamdb.com/api/public/card/{cardNum}"))?;
+    let mut res = reqwest::blocking::get(format!("https://arkhamdb.com/api/public/card/{card_num}"))?;
     let mut body = String::new();
     res.read_to_string(&mut body)?;
     let json = json::parse(&body).unwrap();
 
     let file= fs::File::create(format!("results/buffer.ts")).unwrap();
 
-    if (body.contains("\"asset\"")) {
+    if body.contains("\"asset\"") {
         parse_asset(json, file);
-    } else if (body.contains("\"skill\"")) {
+    } else if body.contains("\"skill\"") {
         parse_skill(json, file);
-    } else if (body.contains("\"event\"")) {
+    } else if body.contains("\"event\"") {
         parse_event(json, file);
-    } else if(body.contains("\"enemy\"")) {
+    } else if body.contains("\"enemy\"") {
         parse_enemy(json, file);
-    } else if(body.contains("\"location\"")) {
+    } else if body.contains("\"location\"") {
         parse_location(json, file);
-    } else if(body.contains("\"treachery\"")) {
+    } else if body.contains("\"treachery\"") {
         parse_treachery(json, file);
-    } else if(body.contains("\"agenda\"")) {
+    } else if body.contains("\"agenda\"") {
         parse_agenda(json, file);
-    } else if(body.contains("\"act\"")) {
+    } else if body.contains("\"act\"") {
         parse_act(json, file);
     } else {
         panic!("not parseable")
@@ -50,7 +50,7 @@ fn parse_asset(card: JsonValue, mut file: fs::File) {
     let skill_intellect = if &card["skill_intellect"] != &Null { &card["skill_intellect"].to_string() } else { "0" };
     let skill_willpower = if &card["skill_willpower"] != &Null { &card["skill_willpower"].to_string() } else { "0" };
     let skill_wildcard = if &card["skill_wildcard"] != &Null { &card["skill_wildcard"].to_string() } else { "0" };
-    let xp = if &card["xp"] != &Null { &card["xp"].to_string() } else { "0" };;
+    let xp = if &card["xp"] != &Null { &card["xp"].to_string() } else { "0" };
     let deck_limit = &card["deck_limit"];
     let pack_name = &card["pack_name"];
     let type_name = &card["type_name"];
