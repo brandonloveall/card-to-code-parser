@@ -11,7 +11,7 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
     let mut cardnums = File::open("card_codes").unwrap();
 
     let mut contents = String::new();
-    cardnums.read_to_string(&mut contents);
+    cardnums.read_to_string(&mut contents)?;
     let numsvec: Vec<&str> = contents.split_whitespace().collect();
 
     for card_num in numsvec {
