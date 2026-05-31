@@ -16,7 +16,7 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
     res.read_to_string(&mut body)?;
     let json = json::parse(&body).unwrap();
 
-    let file= fs::File::create(format!("results/buffer.ts")).unwrap();
+    let file= fs::File::create(format!("results/{card_num}.ts")).unwrap();
 
     if body.contains("\"asset\"") {
         parse_asset(json, file);
@@ -42,7 +42,7 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
 
 #[allow(unused_must_use)]
 fn parse_asset(card: JsonValue, mut file: fs::File) {
-    let slot = &card["slot"];
+    let slot = if &card["slot"] != &Null { &card["slot"].to_string() } else { "" };
     let code = &card["code"];
     let cost = &card["cost"];
     let skill_agility = if &card["skill_agility"] != &Null { &card["skill_agility"].to_string() } else { "0" };
@@ -233,7 +233,7 @@ fn parse_enemy(card: JsonValue, mut file: fs::File) {
     let enemy_fight = &card["enemy_fight"];
     let enemy_evade = &card["enemy_evade"];
     let victory = if &card["victory"] != &Null { &card["victory"].to_string() } else { "0" };
-    let encounter_name = &card["encounter_name"];
+    let encounter_name = if &card["encounter_name"] != &Null { &card["encounter_name"].to_string() } else { "" };
     let encounter_position = &card["encounter_position"];
     let pack_name = &card["pack_name"];
     let type_name = &card["type_name"];
@@ -296,7 +296,7 @@ fn parse_location(card: JsonValue, mut file: fs::File) {
     let back_name = if &card["back_name"] != &Null { &card["back_name"].to_string() } else { "" };
     let back_text = if &card["back_text"] != &Null { &card["back_text"].to_string() } else { "" };
     let back_flavor = if &card["back_flavor"] != &Null { &card["back_flavor"].to_string() } else { "" };
-    let encounter_name = &card["encounter_name"];
+    let encounter_name = if &card["encounter_name"] != &Null { &card["encounter_name"].to_string() } else { "" };
     let encounter_position = &card["encounter_position"];
     let pack_name = &card["pack_name"];
     let type_name = &card["type_name"];
@@ -351,7 +351,7 @@ export class _{code} extends LocationCard {{
 #[allow(unused_must_use)]
 fn parse_treachery(card: JsonValue, mut file: fs::File) {
     let code = &card["code"];
-    let encounter_name = &card["encounter_name"];
+    let encounter_name = if &card["encounter_name"] != &Null { &card["encounter_name"].to_string() } else { "" };
     let encounter_position = &card["encounter_position"];
     let pack_name = &card["pack_name"];
     let type_name = &card["type_name"];
@@ -405,7 +405,7 @@ fn parse_agenda(card: JsonValue, mut file: fs::File) {
     let back_name = if &card["back_name"] != &Null { &card["back_name"].to_string() } else { "" };
     let back_text = if &card["back_text"] != &Null { &card["back_text"].to_string() } else { "" };
     let back_flavor = if &card["back_flavor"] != &Null { &card["back_flavor"].to_string() } else { "" };
-    let encounter_name = &card["encounter_name"];
+    let encounter_name = if &card["encounter_name"] != &Null { &card["encounter_name"].to_string() } else { "" };
     let encounter_position = &card["encounter_position"];
     let pack_name = &card["pack_name"];
     let type_name = &card["type_name"];
@@ -464,7 +464,7 @@ fn parse_act(card: JsonValue, mut file: fs::File) {
     let back_name = if &card["back_name"] != &Null { &card["back_name"].to_string() } else { "" };
     let back_text = if &card["back_text"] != &Null { &card["back_text"].to_string() } else { "" };
     let back_flavor = if &card["back_flavor"] != &Null { &card["back_flavor"].to_string() } else { "" };
-    let encounter_name = &card["encounter_name"];
+    let encounter_name = if &card["encounter_name"] != &Null { &card["encounter_name"].to_string() } else { "" };
     let encounter_position = &card["encounter_position"];
     let pack_name = &card["pack_name"];
     let type_name = &card["type_name"];
