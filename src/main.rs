@@ -456,7 +456,7 @@ fn parse_location(card: JsonValue, mut file: fs::File) {
     let code = &card["code"];
     let shroud = &card["shroud"];
     let clues = &card["clues"];
-    let stage = &card["stage"];
+    let stage = "0";
     let back_name = if &card["back_name"] != &Null {
         &card["back_name"].to_string()
     } else {
@@ -710,7 +710,11 @@ export class _{code} extends AgendaCard {{
 #[allow(unused_must_use)]
 fn parse_act(card: JsonValue, mut file: fs::File) {
     let code = &card["code"];
-    let clues = &card["clues"];
+    let clues = if &card["clues"] != &Null {
+        &card["clues"].to_string()
+    } else {
+        "0"
+    };
     let stage = &card["stage"];
     let back_name = if &card["back_name"] != &Null {
         &card["back_name"].to_string()
