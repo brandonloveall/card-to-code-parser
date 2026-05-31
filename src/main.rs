@@ -68,7 +68,7 @@ fn parse_asset(card: JsonValue, mut file: fs::File) {
     let traits = &card["traits"];
     let flavor = if &card["flavor"] != &Null { &card["flavor"].to_string() } else { "" };
     let subname = if &card["subname"] != &Null { &card["subname"].to_string() } else { "" };
-    let restrictions = &card["restrictions"];
+    let restrictions = &if &card["restrictions"] != &Null { &card["restrictions"].to_string() } else { "{}" };
 
     write!(file, r#"
 import {{ AssetCard }} from "server/abstracts/card_inherits/player_card_inherits/costing_card_inherits/asset_card";
@@ -130,6 +130,7 @@ fn parse_skill(card: JsonValue, mut file: fs::File) {
     let traits = &card["traits"];
     let flavor = if &card["flavor"] != &Null { &card["flavor"].to_string() } else { "" };
     let subname = if &card["subname"] != &Null { &card["subname"].to_string() } else { "" };
+    let restrictions = &if &card["restrictions"] != &Null { &card["restrictions"].to_string() } else { "{}" };
 
     write!(file, r#"
 import {{ SkillCard }} from "server/abstracts/card_inherits/player_card_inherits/skill_card";
@@ -159,6 +160,7 @@ export class _{code} extends SkillCard {{
     traits = "{traits}";
     flavor = `{flavor}`;
     subname = "{subname}";
+    restrictions = {restrictions};
 }}
 "#);
 }
@@ -190,6 +192,7 @@ fn parse_event(card: JsonValue, mut file: fs::File) {
     let traits = &card["traits"];
     let flavor = if &card["flavor"] != &Null { &card["flavor"].to_string() } else { "" };
     let subname = if &card["subname"] != &Null { &card["subname"].to_string() } else { "" };
+    let restrictions = &if &card["restrictions"] != &Null { &card["restrictions"].to_string() } else { "{}" };
 
     write!(file, r#"
 import {{ EventCard }} from "server/abstracts/card_inherits/player_card_inherits/costing_card_inherits/event_card";
@@ -220,6 +223,7 @@ export class _{code} extends EventCard {{
     traits = "{traits}";
     flavor = `{flavor}`;
     subname = "{subname}";
+    restrictions = {restrictions};
 }}
 "#);
 }
@@ -234,7 +238,7 @@ fn parse_enemy(card: JsonValue, mut file: fs::File) {
     let enemy_evade = &card["enemy_evade"];
     let victory = if &card["victory"] != &Null { &card["victory"].to_string() } else { "0" };
     let encounter_name = if &card["encounter_name"] != &Null { &card["encounter_name"].to_string() } else { "" };
-    let encounter_position = &card["encounter_position"];
+    let encounter_position= if &card["encounter_position"] != &Null { &card["encounter_position"].to_string() } else { "0" };
     let pack_name = &card["pack_name"];
     let type_name = &card["type_name"];
     let faction_name = &card["faction_name"];
@@ -251,6 +255,7 @@ fn parse_enemy(card: JsonValue, mut file: fs::File) {
     let traits = &card["traits"];
     let flavor = if &card["flavor"] != &Null { &card["flavor"].to_string() } else { "" };
     let subname = if &card["subname"] != &Null { &card["subname"].to_string() } else { "" };
+    let restrictions = &if &card["restrictions"] != &Null { &card["restrictions"].to_string() } else { "{}" };
 
     write!(file, r#"
 import {{ EnemyCard }} from "server/abstracts/card_inherits/nonplayer_card_inherits/hostile_card_inherits/enemy_card";
@@ -283,6 +288,7 @@ export class _{code} extends EnemyCard {{
     traits = "{traits}";
     flavor = `{flavor}`;
     subname = "{subname}";
+    restrictions = {restrictions};
 }}
 "#);
 }
@@ -297,7 +303,7 @@ fn parse_location(card: JsonValue, mut file: fs::File) {
     let back_text = if &card["back_text"] != &Null { &card["back_text"].to_string() } else { "" };
     let back_flavor = if &card["back_flavor"] != &Null { &card["back_flavor"].to_string() } else { "" };
     let encounter_name = if &card["encounter_name"] != &Null { &card["encounter_name"].to_string() } else { "" };
-    let encounter_position = &card["encounter_position"];
+    let encounter_position= if &card["encounter_position"] != &Null { &card["encounter_position"].to_string() } else { "0" };
     let pack_name = &card["pack_name"];
     let type_name = &card["type_name"];
     let faction_name = &card["faction_name"];
@@ -352,7 +358,7 @@ export class _{code} extends LocationCard {{
 fn parse_treachery(card: JsonValue, mut file: fs::File) {
     let code = &card["code"];
     let encounter_name = if &card["encounter_name"] != &Null { &card["encounter_name"].to_string() } else { "" };
-    let encounter_position = &card["encounter_position"];
+    let encounter_position= if &card["encounter_position"] != &Null { &card["encounter_position"].to_string() } else { "0" };
     let pack_name = &card["pack_name"];
     let type_name = &card["type_name"];
     let faction_name = &card["faction_name"];
@@ -369,6 +375,7 @@ fn parse_treachery(card: JsonValue, mut file: fs::File) {
     let traits = &card["traits"];
     let flavor = if &card["flavor"] != &Null { &card["flavor"].to_string() } else { "" };
     let subname = if &card["subname"] != &Null { &card["subname"].to_string() } else { "" };
+    let restrictions = &if &card["restrictions"] != &Null { &card["restrictions"].to_string() } else { "{}" };
 
     write!(file, r#"
 import {{ TreacheryCard }} from "server/abstracts/card_inherits/nonplayer_card_inherits/hostile_card_inherits/treachery_card";
@@ -393,6 +400,7 @@ export class _{code} extends TreacheryCard {{
     traits = "{traits}";
     flavor = `{flavor}`;
     subname = "{subname}";
+    restrictions = {restrictions};
 }}
 "#);
 }
@@ -406,7 +414,7 @@ fn parse_agenda(card: JsonValue, mut file: fs::File) {
     let back_text = if &card["back_text"] != &Null { &card["back_text"].to_string() } else { "" };
     let back_flavor = if &card["back_flavor"] != &Null { &card["back_flavor"].to_string() } else { "" };
     let encounter_name = if &card["encounter_name"] != &Null { &card["encounter_name"].to_string() } else { "" };
-    let encounter_position = &card["encounter_position"];
+    let encounter_position= if &card["encounter_position"] != &Null { &card["encounter_position"].to_string() } else { "0" };
     let pack_name = &card["pack_name"];
     let type_name = &card["type_name"];
     let faction_name = &card["faction_name"];
@@ -465,7 +473,7 @@ fn parse_act(card: JsonValue, mut file: fs::File) {
     let back_text = if &card["back_text"] != &Null { &card["back_text"].to_string() } else { "" };
     let back_flavor = if &card["back_flavor"] != &Null { &card["back_flavor"].to_string() } else { "" };
     let encounter_name = if &card["encounter_name"] != &Null { &card["encounter_name"].to_string() } else { "" };
-    let encounter_position = &card["encounter_position"];
+    let encounter_position= if &card["encounter_position"] != &Null { &card["encounter_position"].to_string() } else { "0" };
     let pack_name = &card["pack_name"];
     let type_name = &card["type_name"];
     let faction_name = &card["faction_name"];
